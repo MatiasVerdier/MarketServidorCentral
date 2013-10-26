@@ -58,7 +58,10 @@ public class ControladorVersiones {
                 
                 ResultSet res2 = mbd.SELECT(sql2);
                 res2.next();
+                if (res2.getString("motivo") !=null)
                 v.setMotivo_recahazo(res2.getString("motivo"));
+                else
+                    v.setMotivo_recahazo(null);
             }
             versiones.add(v);
         }
