@@ -14,7 +14,16 @@ public class Juego {
     private ArrayList categorias;
     private ArrayList compras;
     private ArrayList comentarios;
-   // private ArrayList <Version> versiones;
+    private double ganancias;
+
+    // private ArrayList <Version> versiones;
+    public double getGanancias() {
+        return ganancias;
+    }
+
+    public void setGanancias(double ganancias) {
+        this.ganancias = ganancias;
+    }
 
     public Juego() {
         this.id = 0;

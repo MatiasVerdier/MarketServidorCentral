@@ -37,7 +37,7 @@ public class ControladorCompras {
         mbd.INSERT(sql);
     }
     
-        public void bajaCompra(Compra c) throws SQLException{
+    public void bajaCompra(Compra c) throws SQLException{
         String sql = "delete from compras where id_juego = " + c.getJuego().getId() + " and id_usuario =" + c.getCliente().getId();
         PreparedStatement ps = mbd.getConexion().prepareStatement(sql);
         ps.execute();
