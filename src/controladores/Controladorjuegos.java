@@ -310,6 +310,22 @@ public class Controladorjuegos {
 
         return juegos;
     }
+    
+    public ArrayList listarMejorPuntuados(int cant) throws SQLException {
+        String sql = "SELECT id_juego, avg(puntaje) as valoracion from comentarios "
+                   + "group by id_juego order by valoracion desc limit 3" + cant;
+
+        //System.out.println("consulta mas comentados: "+sql);
+
+        ResultSet res = mbd.SELECT(sql);
+        ArrayList juegos = new ArrayList();
+        while (res.next()) {
+            Juego j = this.verInfoBasica(res.getInt("id_juego"));
+            juegos.add(j);
+        }
+
+        return juegos;
+    }
 
     public void bajaJuego(int idJ) throws SQLException {
         try {
