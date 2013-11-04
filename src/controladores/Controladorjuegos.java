@@ -287,15 +287,27 @@ public class Controladorjuegos {
     }
     
     public void bajaJuego(int idJ) throws SQLException{
-         try {
-            String sql = "DELETE FROM juegos" +
-                           " WHERE id_juego = " + idJ + ";";
-               
-               PreparedStatement ps = mbd.getConexion().prepareStatement(sql);
-               ps.execute();
+        
+        /*String sql1 = " Delete From comentarios c, respuestas r, respuestas_cometarios rc "
+                    + " Where c.id_comentario = rc.id_comentario and rc.id_comentario = r.id_com ";
+        String sql2 = " Delete From juegos j, versiones v, versiones_rechazadas vr "
+                    + " Where  j.id_juego = "+idJ+" v.orden_de_alta = "+ordenAlta+" and j.j.id_juego = v.id_juego "
+                    + " and v.id_juego = vr.id_juego "; */
+        try {
+            String sql = "Delete From compras Where id_juego = "+idJ+" ";
+               mbd.UPDATE(sql);
+                   sql = " Delete From comentarios Where id_juego="+idJ+"";
+               mbd.UPDATE(sql);
+                   sql = " Delete From versiones_rechazadas Where id_juego="+idJ+"";
+               mbd.UPDATE(sql);
+                   sql = " Delete From versiones Where id_juego="+idJ+"";
+               mbd.UPDATE(sql);
+                   sql = " Delete From juegos Where id_juego="+idJ+"";
+               mbd.UPDATE(sql);
+                   
         } catch (SQLException ex) {
             throw ex;
         }
-    }
     
+    }
 }
