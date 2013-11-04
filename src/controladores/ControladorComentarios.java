@@ -22,7 +22,8 @@ public class ControladorComentarios {
     
         public ArrayList verComentariosJuego(int id) throws SQLException{
         ArrayList coments = new ArrayList();
-        String sql = "select * from comentarios where id_juego = "+id;
+        String sql = "select c.* from comentarios c, juegos j where "
+                    + "j.borrado = 0 and j.id_juego = c.id_juego and c.id_juego = "+id;
         ResultSet res = mbd.SELECT(sql);
         while(res.next()){
             Comentario com = new Comentario();

@@ -34,7 +34,7 @@ public class Controladorjuegos {
     public ArrayList<Juego> buscar(String busqueda) throws SQLException {
         String sql = "select distinct j.id_juego, j.nombre, j.foto "
                 + "from juegos j, categorias_juegos cj, categorias c, usuarios u "
-                + "where j.id_juego = cj.id_juego and c.id_categoria = cj.id_categoria"
+                + "where j.borrado = 0 and j.id_juego = cj.id_juego and c.id_categoria = cj.id_categoria"
                 + " and j.id_desarrollador = u.id_usuario and "
                 + "(j.nombre like '%" + busqueda + "%' or c.nombre like '%" + busqueda + "%' "
                 + "or u.nick like '%" + busqueda + "%' or j.descripcion like '%" + busqueda + "%')";
@@ -61,7 +61,7 @@ public class Controladorjuegos {
         try {
             String sql = "SELECT juegos.id_juego, sum(juegos.precio) as Ganancias "
                     + "FROM market.juegos, compras "
-                    + "where id_desarrollador =  " + idUsuario + " and compras.id_juego = juegos.id_juego "
+                    + "where borrado = 0 and id_desarrollador =  " + idUsuario + " and compras.id_juego = juegos.id_juego "
                     + "group by juegos.id_juego;";
 
             ResultSet res = mbd.SELECT(sql);
@@ -79,7 +79,7 @@ public class Controladorjuegos {
     }
 
     public Juego buscarJuegoPorID(int id) throws SQLException {
-        ResultSet res = mbd.SELECT("select id_juego, nombre from juegos where id_juego = " + id);
+        ResultSet res = mbd.SELECT("select id_juego, nombre from juegos where borrado = 0 and id_juego = " + id);
         Juego j = new Juego();
         while (res.next()) {
             j.setId(res.getInt("id_juego"));
@@ -115,7 +115,7 @@ public class Controladorjuegos {
     public ArrayList listarJuegosPorCategoria(int id_cat) throws SQLException {
         ArrayList juegos = new ArrayList();
         String sql = "select j.id_juego from juegos j, categorias_juegos cj "
-                + "where cj.id_categoria = " + id_cat
+                + "where j.borrado = 0 and cj.id_categoria = " + id_cat
                 + " and cj.id_juego = j.id_juego";
 
         ResultSet res = mbd.SELECT(sql);
@@ -131,7 +131,7 @@ public class Controladorjuegos {
     public Juego verInfoJuego(int id) throws SQLException {
         Juego j = new Juego();
         String sql = "select j.*, u.nick from juegos j, usuarios u "
-                + "where j.id_desarrollador = u.id_usuario and j.id_juego =" + id;
+                + "where j.borrado = 0 and j.id_desarrollador = u.id_usuario and j.id_juego =" + id;
         ResultSet res = mbd.SELECT(sql);
         res.next();
 
@@ -147,7 +147,7 @@ public class Controladorjuegos {
         des.setNick(res.getString("nick"));
         j.setDes(des);
 
-        ResultSet res2 = mbd.SELECT("select numero_version, size from versiones where id_juego = " + id
+        ResultSet res2 = mbd.SELECT("select numero_version, size from versiones where borrado = 0 and id_juego = " + id
                 + " and estado = 'aprobada'");
         ArrayList<Version> vers = new ArrayList<>();
         while (res2.next()) {
@@ -164,7 +164,7 @@ public class Controladorjuegos {
 
     public ArrayList listarJuegos() throws SQLException {
         ArrayList juegos = new ArrayList();
-        String sql = "select id_juego, nombre from juegos";
+        String sql = "select id_juego, nombre from juegos where borrado = 0";
         ResultSet res = mbd.SELECT(sql);
         while (res.next()) {
             Juego j = new Juego();
@@ -179,7 +179,7 @@ public class Controladorjuegos {
     public ArrayList listarJuegosConCompras() throws SQLException {
         ArrayList juegos = new ArrayList();
 
-        String sql = "select id_juego, nombre from juegos where id_juego in "
+        String sql = "select id_juego, nombre from juegos where borrado = 0 and id_juego in "
                 + "(select id_juego from compras)";
 
         ResultSet res = mbd.SELECT(sql);
@@ -211,7 +211,7 @@ public class Controladorjuegos {
     public ArrayList listarJuegosPorCliente(int id_usuario) throws SQLException {
         ArrayList juegos = new ArrayList();
         String sql = "select j.id_juego, j.nombre, j.foto, c.id_usuario from juegos j, compras c "
-                + "where c.id_usuario = " + id_usuario
+                + "where j.borrado = 0 and c.id_usuario = " + id_usuario
                 + " and c.id_juego = j.id_juego";
 
         ResultSet res = mbd.SELECT(sql);
@@ -229,7 +229,7 @@ public class Controladorjuegos {
     public ArrayList listarJuegosPorDesarrollador(int id_usuario) throws SQLException {
         ArrayList<Juego> juegos = new ArrayList<>();
         String sql = "select id_juego, nombre from juegos "
-                + "where id_desarrollador = " + id_usuario;
+                + "where borrado = 0 and id_desarrollador = " + id_usuario;
 
         ResultSet res = mbd.SELECT(sql);
         while (res.next()) {
@@ -244,7 +244,7 @@ public class Controladorjuegos {
     public ArrayList listarJuegosPorDesarrolladorVersionAprobada(int id_usuario) throws SQLException {
         ArrayList<Juego> juegos = new ArrayList();
         String sql = "select Distinct(j.id_juego) from juegos j, versiones v "
-                + "where id_desarrollador = " + id_usuario + " AND  v.estado = 'aprobada' and j.id_juego = v.id_juego;";
+                + "where j.borrado = 0 and id_desarrollador = " + id_usuario + " AND  v.estado = 'aprobada' and j.id_juego = v.id_juego;";
 
         ResultSet res = mbd.SELECT(sql);
         while (res.next()) {
@@ -258,7 +258,7 @@ public class Controladorjuegos {
     /*--------------- OBTENER INFO BASICA DEL JUEGO PARA LISTAR ----------------*/
 
     public Juego verInfoBasica(int id) throws SQLException {
-        String sql = "select j.*, u.nick from juegos j, usuarios u where id_juego = " + id
+        String sql = "select j.*, u.nick from juegos j, usuarios u where borrado = 0 and id_juego = " + id
                 + " and j.id_desarrollador = u.id_usuario";
 
         //System.out.println("consulta ver info basica: "+sql);
@@ -329,7 +329,7 @@ public class Controladorjuegos {
 
     public void bajaJuego(int idJ) throws SQLException {
         try {
-            String sql = "DELETE FROM juegos"
+            String sql = "update juegos set borrado = 1"
                     + " WHERE id_juego = " + idJ + ";";
 
             PreparedStatement ps = mbd.getConexion().prepareStatement(sql);

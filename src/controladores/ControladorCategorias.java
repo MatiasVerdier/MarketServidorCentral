@@ -50,8 +50,9 @@ public class ControladorCategorias {
     public ArrayList verCategoriasPorJuego(int id){
         try {
             ArrayList cats = new ArrayList();
-            String sql = "select c.id_categoria, c.nombre from categorias c, categorias_juegos cj "+
-                        "where cj.id_juego = "+id+" and c.id_categoria = cj.id_categoria";
+            String sql = "select c.id_categoria, c.nombre from categorias c, categorias_juegos cj, "+
+                        " juegos j where j.borrado = 0 and j.id_juego = cj.id_juego and "
+                        + "cj.id_juego = "+id+" and c.id_categoria = cj.id_categoria";
             ResultSet res = mbd.SELECT(sql);
             
             while(res.next()){

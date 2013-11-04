@@ -46,8 +46,9 @@ public class ControladorCompras {
     public ArrayList verComprasPorJuego(int id){
         try {
             ArrayList compras = new ArrayList();
-            String sql = "select u.* from usuarios u, compras c "+
-                    "where c.id_juego = "+id+" and c.id_usuario = u.id_usuario";
+            String sql = "select u.* from usuarios u, compras c, juegos j "+
+                    "where j.borrado = 0 and j.id_juego = c.id_juego and "
+                    + "c.id_juego = "+id+" and c.id_usuario = u.id_usuario";
             
             ResultSet res = mbd.SELECT(sql);
             
@@ -68,7 +69,8 @@ public class ControladorCompras {
     public Boolean comproJuego(int idUsuario, int idJuego){
         
         try {
-            String sql = "SELECT * FROM market.compras where id_juego =" + idJuego + " and id_usuario = " + idUsuario + ";";
+            String sql = "SELECT * FROM compras c, juegos j where j.borrado = 0 and "
+                    + "j.id_juego = c.id_juego and id_juego =" + idJuego + " and id_usuario = " + idUsuario + ";";
             ResultSet res = mbd.SELECT(sql);
             if  (res.next()) return true;
         } catch (SQLException ex) {
