@@ -28,7 +28,7 @@ public class ControladorVersiones {
     
     public ArrayList listarVersiones(int id_juego, char filtro) throws SQLException{
         String sql = "select * from versiones v, juegos j where j.borrado = 0 and"
-                + " j.id_juego = v.id_juego and id_juego = "+id_juego;
+                + " j.id_juego = v.id_juego and v.id_juego = "+id_juego;
         if (filtro == 'a'){
             sql += " and estado = 'aprobada'";
         }
@@ -55,7 +55,7 @@ public class ControladorVersiones {
             
             if (v.getEstado().equals("rechazada")){
                 String sql2 = "select motivo from versiones_rechazadas v, juegos j "
-                        + "where j.borrado = 0 and v.id_juego = j.id_juego and id_juego = "+id_juego
+                        + "where j.borrado = 0 and v.id_juego = j.id_juego and v.id_juego = "+id_juego
                         +" and numero_version = '"+v.getNro_version()+"'";
                 
                 ResultSet res2 = mbd.SELECT(sql2);

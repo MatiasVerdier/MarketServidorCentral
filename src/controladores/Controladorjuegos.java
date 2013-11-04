@@ -147,7 +147,7 @@ public class Controladorjuegos {
         des.setNick(res.getString("nick"));
         j.setDes(des);
 
-        ResultSet res2 = mbd.SELECT("select numero_version, size from versiones where borrado = 0 and id_juego = " + id
+        ResultSet res2 = mbd.SELECT("select numero_version, size from versiones where id_juego = " + id
                 + " and estado = 'aprobada'");
         ArrayList<Version> vers = new ArrayList<>();
         while (res2.next()) {
