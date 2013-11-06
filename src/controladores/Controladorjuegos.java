@@ -193,20 +193,20 @@ public class Controladorjuegos {
         return juegos;
     }
 
-    public int altaComentario(Comentario c) throws SQLException {
-        String sql = "insert into comentarios (id_juego, texto, fecha, id_usuario, id_padre) "
-                + " values ($1,'$2','$3',$4,$5)";
-
-        Date fecha = new Date(c.getFecha().getTime());
-
-        sql = sql.replace("$1", String.valueOf(c.getId_juego()));
-        sql = sql.replace("$2", c.getTexto());
-        sql = sql.replace("$3", fecha.toString());
-        sql = sql.replace("$4", String.valueOf(c.getId_usu()));
-        sql = sql.replace("$5", String.valueOf(c.getId_padre()));
-
-        return mbd.INSERT(sql);
-    }
+//    public int altaComentario(Comentario c) throws SQLException {
+//        String sql = "insert into comentarios (id_juego, texto, fecha, id_usuario, id_padre) "
+//                + " values ($1,'$2','$3',$4,$5)";
+//
+//        Date fecha = new Date(c.getFecha().getTime());
+//
+//        sql = sql.replace("$1", String.valueOf(c.getId_juego()));
+//        sql = sql.replace("$2", c.getTexto());
+//        sql = sql.replace("$3", fecha.toString());
+//        sql = sql.replace("$4", String.valueOf(c.getId_usu()));
+//        sql = sql.replace("$5", String.valueOf(c.getId_padre()));
+//
+//        return mbd.INSERT(sql);
+//    }
 
     public ArrayList listarJuegosPorCliente(int id_usuario) throws SQLException {
         ArrayList juegos = new ArrayList();
