@@ -27,7 +27,8 @@ public class ControladorVersiones {
     }
     
     public ArrayList listarVersiones(int id_juego, char filtro) throws SQLException{
-        String sql = "select * from versiones where id_juego = "+id_juego;
+        String sql = "select * from versiones v, juegos j where j.borrado = 0 and"
+                + " j.id_juego = v.id_juego and v.id_juego = "+id_juego;
         if (filtro == 'a'){
             sql += " and estado = 'aprobada'";
         }
@@ -53,12 +54,16 @@ public class ControladorVersiones {
             v.setJuego(cj.buscarJuegoPorID(id_juego));
             
             if (v.getEstado().equals("rechazada")){
-                String sql2 = "select motivo from versiones_rechazadas where id_juego = "+id_juego
+                String sql2 = "select motivo from versiones_rechazadas v, juegos j "
+                        + "where j.borrado = 0 and v.id_juego = j.id_juego and v.id_juego = "+id_juego
                         +" and numero_version = '"+v.getNro_version()+"'";
                 
                 ResultSet res2 = mbd.SELECT(sql2);
                 res2.next();
+                if (res2.getString("motivo") !=null)
                 v.setMotivo_recahazo(res2.getString("motivo"));
+                else
+                    v.setMotivo_recahazo(null);
             }
             versiones.add(v);
         }
@@ -100,7 +105,8 @@ public class ControladorVersiones {
     }
     
     public ArrayList verInfoVer() throws SQLException{
-        String sql = "select u.nick, j.nombre, v.numero_version, v.orden_de_alta, v.id_juego, v.size, v.fecha_alta from versiones v, juegos j, usuarios u where j.id_juego=v.id_juego and "
+        String sql = "select u.nick, j.nombre, v.numero_version, v.orden_de_alta, v.id_juego, v.size, v.fecha_alta"
+                + " from versiones v, juegos j, usuarios u where j.borrado = 0 and j.id_juego=v.id_juego and "
             + "j.id_desarrollador=u.id_usuario and v.estado='pendiente' order by id_juego";
         ResultSet res = mbd.SELECT(sql);
         ArrayList versiones = new ArrayList();
@@ -153,7 +159,7 @@ public class ControladorVersiones {
     private int getOrdenDeAlta(int idJuego ){
         int ordenA = 1;
         try {
-            String sql = "SELECT max(orden_de_alta) as orden FROM market.versiones where id_juego = " + idJuego + ";";
+            String sql = "SELECT max(orden_de_alta) as orden FROM versiones where id_juego = " + idJuego;
             
             ResultSet res;
             
@@ -178,8 +184,9 @@ public class ControladorVersiones {
         Version v = new Version();
         try {
            
-            String sql = "SELECT * FROM market.versiones where id_juego = " + idJuego + " and estado = 'aprobada' and " + 
-                        "orden_de_alta = (select max(orden_de_alta) from versiones where id_juego = " + idJuego
+            String sql = "SELECT * FROM versiones v, juegos j where j.borrado = 0 and "
+                       + " j.id_juego = v.id_juego and v.id_juego = " + idJuego + " and v.estado = 'aprobada' and " + 
+                        "v.orden_de_alta = (select max(orden_de_alta) from versiones where id_juego = " + idJuego
                         + " and estado = 'aprobada')";
         
             ResultSet res = mbd.SELECT(sql);

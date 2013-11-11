@@ -1,10 +1,12 @@
 
 package dominio;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-
+import dominio.mesGanancia;
+        
 public class Usuario {
     private int id;
     private String nombre;
@@ -16,7 +18,9 @@ public class Usuario {
     private String email;
     private String img;
     private String pass;
-
+    private ArrayList<mesGanancia> listaGananciasPorMes;
+    
+    
     public Usuario() {
         this.id = 0;
         this.nombre = "";
@@ -28,6 +32,14 @@ public class Usuario {
         this.email = "";
         this.img = "";
         this.pass = "";
+    }
+
+    public ArrayList<mesGanancia> getListaGananciasPorMes() {
+        return listaGananciasPorMes;
+    }
+
+    public void setListaGananciasPorMes(ArrayList<mesGanancia> listaGananciasPorMes) {
+        this.listaGananciasPorMes = listaGananciasPorMes;
     }
 
     public String getImg() {
