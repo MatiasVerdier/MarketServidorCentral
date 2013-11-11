@@ -11,6 +11,15 @@ public class Comentario {
     private int id_juego;
     private int id_usu;
     private int id_padre;
+    private int puntaje;
+
+    public int getPuntaje() {
+        return puntaje;
+    }
+
+    public void setPuntaje(int puntaje) {
+        this.puntaje = puntaje;
+    }
     
     private ArrayList respuestas = new ArrayList();
 
