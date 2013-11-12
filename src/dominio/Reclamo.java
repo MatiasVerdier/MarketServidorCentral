@@ -16,33 +16,33 @@ public class Reclamo {
     private int id_reclamo;
     private String texto;
     private String categoria;
-    private Juego id_juego;
-    private Cliente id_usuario;
+    private int id_juego;
+    private int id_usuario;
     private Date fecha;
-    private Version version;
+    private String version;
 
     public Reclamo() {
-        this.id_usuario = new Cliente();
+        this.id_usuario = 0;
         this.id_reclamo = 0;
         this.categoria = "";
-        this.id_juego = new Juego();
+        this.id_juego = 0;
         this.texto = "";
         this.fecha = new Date();
-        this.version = new Version();
+        this.version = "";
     }
 
     public Date getFechaReclamo(){
-    return fecha;
-}
-    
-    public Version getVersionRecl(){
-    return version;    
+        return fecha;
     }
-    public Juego getIDJueg() {
+    
+    public String getVersionRecl(){
+        return version;    
+    }
+    public int getIDJueg() {
         return id_juego;
     }
 
-    public Cliente getIDCli() {
+    public int getIDCli() {
         return id_usuario;
     }
     
@@ -58,7 +58,7 @@ public class Reclamo {
         return id_reclamo;
     }
     
-    public void setJueg(Juego juego){
+    public void setJueg(int juego){
         this.id_juego = juego;
     }
     
@@ -70,7 +70,7 @@ public class Reclamo {
         this.id_reclamo =id_reclamo;
     }
     
-    public void setcli(Cliente cli){
+    public void setCli(int cli){
         this.id_usuario = cli;
     }
     
@@ -82,7 +82,7 @@ public class Reclamo {
         this.fecha = fechaReclamo;
     }
     
-    public void setVersion(Version numero){
+    public void setNroVersion(String numero){
         this.version = numero;
     }
 }
