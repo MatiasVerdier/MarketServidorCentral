@@ -141,6 +141,7 @@ public class Controladorjuegos {
         j.setPrecio(res.getDouble("precio"));
         j.setSize(res.getDouble("size"));
         j.setPortada(res.getString("foto"));
+        j.setDes((Desarrollador) cu.find(res.getString("nick")));
         j.setComentarios(ControladorComentarios.getInstancia().verComentariosJuego(j.getId()));
         j.setCategorias(ControladorCategorias.getInstancia().verCategoriasPorJuego(j.getId()));
         Desarrollador des = new Desarrollador();
