@@ -37,9 +37,9 @@ public class ControladorReclamos {
 
     public ArrayList ConsultaReclamo(int idj) throws SQLException {
         ArrayList consulta = new ArrayList();
-        String sql = " Select r.* "
-                + " From reclamos r "
-                + " Where r.id_juego=" + idj + " ";
+        String sql = " Select * "
+                + " From reclamos "
+                + " Where id_juego="+ idj +" ";
 
         ResultSet res = mbd.SELECT(sql);
         while (res.next()) {
