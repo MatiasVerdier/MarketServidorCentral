@@ -28,6 +28,7 @@ public class ControladorCompras {
          return INSTANCIA;
     }
     
+    
     public void altaCompra(Compra c) throws SQLException{
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String fecha = sdf.format(c.getFecha());
