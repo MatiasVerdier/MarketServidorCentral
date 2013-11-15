@@ -10,11 +10,13 @@ import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import org.jasypt.util.password.BasicPasswordEncryptor;
 
 public class ControladorUsuarios {
     
     private static ControladorUsuarios INSTANCIA = null;
     private ManejadorBD mbd = ManejadorBD.getInstancia();
+    BasicPasswordEncryptor encriptador = new BasicPasswordEncryptor();
     
     public static ControladorUsuarios getInstancia() {
         if (INSTANCIA == null) {
@@ -59,7 +61,10 @@ public class ControladorUsuarios {
         sql = sql.replace("$5", user.getEmail());
         sql = sql.replace("$6", user.getTipo());
         sql = sql.replace("$7", user.getImg());
-        sql = sql.replace("$9", user.getPass());
+        
+        String pass_encriptada = encriptador.encryptPassword(user.getPass());
+        sql = sql.replace("$9", pass_encriptada);
+        
         if (user.getTipo().equals("d")) {
             Desarrollador d = (Desarrollador) user;
             sql = sql.replace("$8", d.getWeb());
@@ -105,7 +110,10 @@ public class ControladorUsuarios {
         sql = sql.replace("$4", fnac.toString());
         sql = sql.replace("$5", user.getEmail());
         sql = sql.replace("$6", user.getImg());
-        sql = sql.replace("$8", user.getPass());
+        
+        String pass_encriptada = encriptador.encryptPassword(user.getPass());
+        
+        sql = sql.replace("$8", pass_encriptada);
         
         if (user.getTipo().equals("d")) {
             Desarrollador d = (Desarrollador) user;
@@ -156,8 +164,13 @@ public class ControladorUsuarios {
     }
     
     public boolean login(String user, String pass) throws SQLException {
-        return mbd.SELECT("select id_usuario from usuarios where "
-                + " nick = '" + user + "' and pass = '" + pass + "'").first();
+        ResultSet res = mbd.SELECT("select pass from usuarios where nick = '"+user+"'");
+        String bd_pass = "";
+        while(res.next()){
+            bd_pass = res.getString("pass");
+        }
+        
+        return encriptador.checkPassword(pass, bd_pass);
     }
     
     public Usuario find(String nick) throws SQLException {
