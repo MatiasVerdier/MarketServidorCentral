@@ -128,6 +128,23 @@ public class Controladorjuegos {
         return juegos;
     }
 
+    
+    public ArrayList listarJuegosPorCategoria(int id_cat, int inicio, int cantidad) throws SQLException {
+        ArrayList juegos = new ArrayList();
+        String sql = "select j.id_juego from juegos j, categorias_juegos cj "
+                + "where j.borrado = 0 and cj.id_categoria = " + id_cat
+                + " and cj.id_juego = j.id_juego limit " + inicio + ", " + cantidad;
+
+        ResultSet res = mbd.SELECT(sql);
+        while (res.next()) {
+            Juego j = this.verInfoJuego(res.getInt("id_juego"));
+
+            juegos.add(j);
+        }
+
+        return juegos;
+    }
+
     public Juego verInfoJuego(int id) throws SQLException {
         Juego j = new Juego();
         String sql = "select j.*, u.nick from juegos j, usuarios u "
@@ -144,9 +161,8 @@ public class Controladorjuegos {
         j.setDes((Desarrollador) cu.find(res.getString("nick")));
         j.setComentarios(ControladorComentarios.getInstancia().verComentariosJuego(j.getId()));
         j.setCategorias(ControladorCategorias.getInstancia().verCategoriasPorJuego(j.getId()));
-        Desarrollador des = new Desarrollador();
-        des.setNick(res.getString("nick"));
-        j.setDes(des);
+        
+       
 
         ResultSet res2 = mbd.SELECT("select numero_version, size from versiones where id_juego = " + id
                 + " and estado = 'aprobada'");
