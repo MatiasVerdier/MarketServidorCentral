@@ -355,4 +355,38 @@ public class Controladorjuegos {
             throw ex;
         }
     }
+    
+    public ArrayList buscarRangoPrecio(String busqueda, double min, double max) throws SQLException{
+        int i = 0;
+        ArrayList encontrados = this.buscar(busqueda);
+        ArrayList filtrados = new ArrayList();
+        
+        while (i<encontrados.size()){
+            Juego j = (Juego)encontrados.get(i);
+            if (j.getPrecio() >= min && j.getPrecio() <= max){
+                filtrados.add(j);
+            }
+            i++;
+        }
+        
+        return filtrados;
+    }
+    
+    public ArrayList <Juego> nuevasVersionesDisponibles(int id_usuario) throws SQLException{
+        ArrayList juegos = new ArrayList();
+        ResultSet res = mbd.SELECT("select id_juego from version_descargada "
+                + "where id_usuario = "+id_usuario+" and tiene_ultima_version = 0");
+        
+        while (res.next()){
+            Juego j = this.verInfoBasica(res.getInt("id_juego"));
+            juegos.add(j);
+        }
+        return juegos;
+    }
+    
+    public void cambiarTieneUltimaVersion(int id_juego, int valor) throws SQLException{
+        String sql = "update version_descargada set "
+                + "tiene_ultima_version = "+valor+" where id_juego = "+id_juego;
+        mbd.UPDATE(sql);
+    }
 }
