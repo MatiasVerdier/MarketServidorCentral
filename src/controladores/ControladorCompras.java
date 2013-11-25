@@ -36,7 +36,7 @@ public class ControladorCompras {
         String sql = "insert into compras values ("+c.getJuego().getId()+
                      ","+c.getCliente().getId()+", '"+fecha+"')";
         
-        String sql2 = "insert into version_descargada "
+        String sql2 = "insert into version_descargada (id_usuario, id_juego) "
                 + "values("+c.getCliente().getId()+", "+c.getJuego().getId()+")";
         
         mbd.INSERT(sql);
