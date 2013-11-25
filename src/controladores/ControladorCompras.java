@@ -76,7 +76,7 @@ public class ControladorCompras {
         
         try {
             String sql = "SELECT * FROM compras c, juegos j where j.borrado = 0 and "
-                    + "j.id_juego = c.id_juego and id_juego =" + idJuego + " and id_usuario = " + idUsuario + ";";
+                    + "j.id_juego = c.id_juego and c.id_juego =" + idJuego + " and c.id_usuario = " + idUsuario + ";";
             ResultSet res = mbd.SELECT(sql);
             if  (res.next()) return true;
         } catch (SQLException ex) {
