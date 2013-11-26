@@ -12,6 +12,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Controladorjuegos {
 
@@ -145,6 +147,24 @@ public class Controladorjuegos {
         return juegos;
     }
 
+    public int obtenerNroPag(int id_cat, int cantidad) throws SQLException{
+        try {
+            ArrayList juegos = new ArrayList();
+            String sql = "select count(j.id_juego) cant from juegos j, categorias_juegos cj "
+                    + "where j.borrado = 0 and cj.id_categoria = " + id_cat
+                    + " and cj.id_juego = j.id_juego";
+
+            ResultSet res = mbd.SELECT(sql);
+            res.next();
+            double val = res.getDouble("cant") / cantidad;
+            double pags =  Math.ceil(val);
+            
+            return (int) pags;
+        } catch (SQLException ex) {
+            throw ex;
+        }
+    }
+    
     public Juego verInfoJuego(int id) throws SQLException {
         Juego j = new Juego();
         String sql = "select j.*, u.nick from juegos j, usuarios u "
